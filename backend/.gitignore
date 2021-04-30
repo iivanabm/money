@@ -31,3 +31,29 @@ build/
 
 ### VS Code ###
 .vscode/
+
+.DS_Store
+
+.metadata
+.mvn
+
+mvnw
+mvnw.cmd
+
+### Eclipse ###
+
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
+*.properties
+
+### Java Class Files ###
+*.class
