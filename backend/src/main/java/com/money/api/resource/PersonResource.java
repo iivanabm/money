@@ -2,6 +2,7 @@ package com.money.api.resource;
 
 import java.util.Optional;
 
+
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.money.api.event.CreatedResourceEvent;
 import com.money.api.model.Person;
 import com.money.api.repository.PersonRepository;
+import com.money.api.service.PersonService;
 
 @RestController
 @RequestMapping("/persons")
@@ -31,6 +34,9 @@ public class PersonResource {
 	
 	@Autowired
 	private ApplicationEventPublisher publisher;
+	
+	@Autowired
+	private PersonService personService;
 	
 	@PostMapping
 	public ResponseEntity<Person> create(@Valid @RequestBody Person person, HttpServletResponse response) {
@@ -51,6 +57,12 @@ public class PersonResource {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remove(@PathVariable Long code) {
 		personRepository.deleteById(code);
+	}
+	
+	@PutMapping("/{code}")
+	public ResponseEntity<Person> update(@PathVariable Long code, @Valid @RequestBody Person person){
+		Person savedPerson = personService.update(code, person);
+		return ResponseEntity.ok(savedPerson);
 	}
 	
 }
