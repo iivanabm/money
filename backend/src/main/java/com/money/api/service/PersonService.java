@@ -15,11 +15,22 @@ public class PersonService {
 	private PersonRepository personRepository;
 
 	public Person update(Long code, Person person) {
-		Person savedPerson = this.personRepository.findById(code)
-				.orElseThrow(() -> new EmptyResultDataAccessException(1));
+		
+		Person savedPerson = findPersonByCode(code);
 		BeanUtils.copyProperties(person, savedPerson, "code");
-	
-		return this.personRepository.save(savedPerson);
+		
+		return personRepository.save(savedPerson);
 	}
 	
+	public void updateActiveProperty(Long code, Boolean active) {
+		Person savedPerson = findPersonByCode(code);
+		savedPerson.setActive(active);
+		personRepository.save(savedPerson);
+	}
+	
+	
+	private Person findPersonByCode(Long code) {
+		return this.personRepository.findById(code)
+				.orElseThrow(() -> new EmptyResultDataAccessException(1));
+	}
 }

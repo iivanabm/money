@@ -2,7 +2,6 @@ package com.money.api.resource;
 
 import java.util.Optional;
 
-
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -63,6 +62,12 @@ public class PersonResource {
 	public ResponseEntity<Person> update(@PathVariable Long code, @Valid @RequestBody Person person){
 		Person savedPerson = personService.update(code, person);
 		return ResponseEntity.ok(savedPerson);
+	}
+
+	@PutMapping("/{code}/active")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void updateActiveProperty(@PathVariable Long code, @RequestBody Boolean active) {
+		personService.updateActiveProperty(code, active);
 	}
 	
 }

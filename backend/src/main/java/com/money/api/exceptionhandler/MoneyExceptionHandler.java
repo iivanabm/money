@@ -3,6 +3,7 @@ package com.money.api.exceptionhandler;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -32,7 +33,7 @@ public class MoneyExceptionHandler extends ResponseEntityExceptionHandler {
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 
 		String userMessage = messageSource.getMessage("message.invalid", null, LocaleContextHolder.getLocale());
-		String devMessage = ex.getCause().toString();
+		String devMessage = Optional.ofNullable(ex.getCause()).orElse(ex).toString();
 		List<Error> errors = Arrays.asList(new Error(userMessage, devMessage));
 		return handleExceptionInternal(ex, errors, headers, HttpStatus.BAD_REQUEST, request);
 	}
