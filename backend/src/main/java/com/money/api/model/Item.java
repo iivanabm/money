@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Table(name = "item")
 public class Item {
@@ -24,9 +26,11 @@ public class Item {
 	private String description;
 	
 	@Column(name = "due_date")
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dueDate;
 	
-	@Column(name= "paymentDay")
+	@Column(name= "payment_date")
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate payment_date;
 	
 	private BigDecimal amount;
