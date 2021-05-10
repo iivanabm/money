@@ -1,5 +1,7 @@
 package com.money.api.model;
 
+import java.io.Serializable;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -14,11 +16,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "item")
-public class Item {
+public class Item implements Serializable {
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,11 +28,9 @@ public class Item {
 	private String description;
 	
 	@Column(name = "due_date")
-	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dueDate;
 	
 	@Column(name= "payment_date")
-	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate payment_date;
 	
 	private BigDecimal amount;
@@ -46,6 +46,8 @@ public class Item {
 	@ManyToOne
 	@JoinColumn(name = "person_code")
 	private Person person;
+	
+	public Item() {}
 
 	public Long getCode() {
 		return code;
