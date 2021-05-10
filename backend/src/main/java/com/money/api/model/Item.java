@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -25,24 +26,31 @@ public class Item implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long code; 
+	
+	@NotNull
 	private String description;
 	
+	@NotNull
 	@Column(name = "due_date")
 	private LocalDate dueDate;
 	
 	@Column(name= "payment_date")
 	private LocalDate payment_date;
 	
+	@NotNull
 	private BigDecimal amount;
 	private String note;
 	
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private ItemType itemType;
 	
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "category_code")
 	private Category category;
 	
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "person_code")
 	private Person person;
