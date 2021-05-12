@@ -1,6 +1,7 @@
 package com.money.api.service;
 
 import org.springframework.beans.BeanUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ public class PersonService {
 	
 	@Autowired
 	private PersonRepository personRepository;
+	
 
 	public Person update(Long code, Person person) {
 		
@@ -29,7 +31,7 @@ public class PersonService {
 	}
 	
 	
-	private Person findPersonByCode(Long code) {
+	public Person findPersonByCode(Long code) {
 		return this.personRepository.findById(code)
 				.orElseThrow(() -> new EmptyResultDataAccessException(1));
 	}
