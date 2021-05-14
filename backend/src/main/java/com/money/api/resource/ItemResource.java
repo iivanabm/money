@@ -25,6 +25,7 @@ import com.money.api.event.CreatedResourceEvent;
 import com.money.api.exceptionhandler.MoneyExceptionHandler.Error;
 import com.money.api.model.Item;
 import com.money.api.repository.ItemRepository;
+import com.money.api.repository.filter.ItemFilter;
 import com.money.api.service.ItemService;
 import com.money.api.service.exception.InactivePersonException;
 
@@ -55,8 +56,8 @@ public class ItemResource {
 	}
 	
 	@GetMapping
-	public List<Item> findAll(){
-		return itemRepository.findAll();
+	public List<Item> searchItems(ItemFilter itemFilter){
+		return itemRepository.filter(itemFilter);
 	}
 	
 	@GetMapping("/{code}")
