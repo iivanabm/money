@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,6 +51,7 @@ public class ItemResource {
 	private MessageSource messageSource;
 	
 	@PostMapping
+	@PreAuthorize("hasAuthority('ROLE_REGISTER_ITEM') and #oauth2.hasScope('write')")
 	public ResponseEntity<Item> create(@Valid @RequestBody Item item, HttpServletResponse response){
 		Item newItem = itemService.saveItem(item);
 		
@@ -60,11 +62,13 @@ public class ItemResource {
 	}
 	
 	@GetMapping
+	@PreAuthorize("hasAuthority('ROLE_SEARCH_ITEM') and #oauth2.hasScope('read')")
 	public Page<Item> searchItems(ItemFilter itemFilter, Pageable pageable){
 		return itemRepository.filter(itemFilter, pageable);
 	}
 	
 	@GetMapping("/{code}")
+	@PreAuthorize("hasAuthority('ROLE_SEARCH_ITEM') and #oauth2.hasScope('read')")
 	public ResponseEntity<Item> findByCode(@PathVariable Long code){
 		return itemRepository.findById(code)
 				.map(item -> ResponseEntity.ok(item))
@@ -73,6 +77,7 @@ public class ItemResource {
 	
 	@DeleteMapping("/{code}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PreAuthorize("hasAuthority('ROLE_REMOVE_ITEM') and #oauth2.hasScope('write')")
 	public void deleteItem(@PathVariable Long code){
 		itemRepository.deleteById(code);
 	}
