@@ -31,6 +31,7 @@ import com.money.api.exceptionhandler.MoneyExceptionHandler.Error;
 import com.money.api.model.Item;
 import com.money.api.repository.ItemRepository;
 import com.money.api.repository.filter.ItemFilter;
+import com.money.api.repository.projection.ItemSummary;
 import com.money.api.service.ItemService;
 import com.money.api.service.exception.InactivePersonException;
 
@@ -65,6 +66,12 @@ public class ItemResource {
 	@PreAuthorize("hasAuthority('ROLE_SEARCH_ITEM') and #oauth2.hasScope('read')")
 	public Page<Item> searchItems(ItemFilter itemFilter, Pageable pageable){
 		return itemRepository.filter(itemFilter, pageable);
+	}
+	
+	@GetMapping(params = "summary")
+	@PreAuthorize("hasAuthority('ROLE_SEARCH_ITEM') and #oauth2.hasScope('read')")
+	public Page<ItemSummary> summarize(ItemFilter itemFilter, Pageable pageable){
+		return itemRepository.summarize(itemFilter, pageable);
 	}
 	
 	@GetMapping("/{code}")
