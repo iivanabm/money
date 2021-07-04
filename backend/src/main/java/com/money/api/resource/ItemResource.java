@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -88,6 +89,17 @@ public class ItemResource {
 	public void deleteItem(@PathVariable Long code){
 		itemRepository.deleteById(code);
 	}
+	
+	@PutMapping("/{code}")
+	@PreAuthorize("hasAuthority('ROLE_REGISTER_ITEM')")
+	public ResponseEntity<Item> update(@PathVariable Long code, @Valid @RequestBody Item item){
+		try {
+			Item savedItem = itemService.update(code, item);
+			return ResponseEntity.ok(savedItem);
+		}catch(IllegalArgumentException e) {
+			return ResponseEntity.notFound().build();
+		}
+	}	
 	
 	@ExceptionHandler({InactivePersonException.class})
 	public ResponseEntity<Object> handleInactivePersonException(InactivePersonException ex){
